@@ -9,16 +9,18 @@
 #include "searchtable.h"
 
 int main(){
-    int file_id = open("./text.txt", O_RDONLY);
+    int file_id = open("/home/valmit/Documents/misc/text.txt", O_RDONLY);
     if (file_id < 0) {
         exit(1);
     }
     searchtable table = build_searchtable(file_id);
-    unsigned long input = 1;
-    char dump[10];
-    while (input != 0 ) {
-        fgets(&dump, 10, stdin);
-               
+    int input = 1;
+    int dump;
+    while (input != '0' ) {
+        if (scanf("%d", &input) != 1) {
+            dump = getc(stdin);
+            continue;
+        }
         if ((input <= table.amount_of_lines) && (input != 0)) {
             char* buf = malloc(sizeof(char) * table.array_of_line_lengths[input - 1]);
             pread(file_id, buf, table.array_of_line_lengths[input - 1], table.array_of_line_offsets[input - 1]);
