@@ -5,9 +5,9 @@
 #include <sys/types.h>
 
 typedef struct searchtable_t {
-    int amount_of_lines;
-    off_t* array_of_line_offsets;
-    off_t* array_of_line_lengths;
+    size_t amount_of_lines;
+    off_t* offsets;
+    off_t* lengths;
 } searchtable;
 
 searchtable build_searchtable(int file_id);

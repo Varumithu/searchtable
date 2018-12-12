@@ -15,19 +15,21 @@ int main(){
     }
     searchtable table = build_searchtable(file_id);
     int input = 1;
-    int dump;
-    while (input != '0' ) {
+    while (input != 0) {
         if (scanf("%d", &input) != 1) {
-            dump = getc(stdin);
+            printf("unrecognized input\n");
+            scanf("%*s");
             continue;
         }
         if ((input <= table.amount_of_lines) && (input != 0)) {
-            char* buf = malloc(sizeof(char) * table.array_of_line_lengths[input - 1]);
-            pread(file_id, buf, table.array_of_line_lengths[input - 1], table.array_of_line_offsets[input - 1]);
-            write(STDOUT_FILENO, buf, table.array_of_line_lengths[input - 1]);
+            char* buf = malloc(sizeof(char) * (size_t)(table.lengths[input - 1]));
+            pread(file_id, buf, table.lengths[input - 1], table.offsets[input - 1]);
+            write(STDOUT_FILENO, buf, (size_t)(table.lengths[input - 1]));
             buf[0] = '\n';
-            write(STDOUT_FILENO, "\n", 1);
             free(buf);
+        }
+        else if (input > table.amount_of_lines) {
+            printf("amount of lines exceeded\n");
         }
     }
     delete_searchtable(&table);
